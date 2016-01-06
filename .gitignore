@@ -5,6 +5,7 @@
 *.sln
 *.vcxproj
 *.vcxproj.filters
+*.VC.opendb
 
 # User-specific files
 *.suo
