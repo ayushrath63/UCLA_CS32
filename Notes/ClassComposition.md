@@ -1,4 +1,6 @@
-# Class Composition:
+# Class Composition
+---
+## Classes Containing objects
 
   Class composition is when a class contains one or more member variables
   that are objects.
@@ -27,6 +29,9 @@
 
   C++ automatically adds constructors and destructors in order for member
   variables to be properly constructed and destructed implicitly.
+
+---
+## Initializer Lists
 
   If an embedded member variable requires a parameter for construction, the
   constructor for it must explicitly be called using an initializer list.
@@ -68,7 +73,6 @@
   construction, no semicolon at the end.
 
   Initializer list must be added to the constructor definition, it cannot be
-  added to a prototype.
+  added to a prototype. Every constructor requires its own initializer list.
 
   The initializer list can also be used to declare scalar member variables.
-M
