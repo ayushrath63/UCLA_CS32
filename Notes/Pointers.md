@@ -167,3 +167,44 @@ is equivalent to:
 
 In order to pass an array to a function by value, you must contain the array
 in a struct and pass the struct by value.
+
+---
+## Structs, Classes and Pointers
+pointers can be used to access structs too.
+
+The . operator can be used to access members of a struct or class.
+Example:
+```
+struct Nerd
+{
+  int numZits;
+  int hoursOfStarcraft;
+};
+
+int main()
+{
+  Nerd carey;
+  Nerd *ptr = & carey;
+
+  (*ptr).numZits = 140;
+}
+```
+
+The -> operator follows a pointer to access members of a class or struct.
+
+Example:
+```
+struct Nerd
+{
+  int numZits;
+  int hoursOfStarcraft;
+};
+
+int main()
+{
+  Nerd carey;
+  Nerd *ptr = & carey;
+
+  ptr->numZits = 140;
+}
+```
