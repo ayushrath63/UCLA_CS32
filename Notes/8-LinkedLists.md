@@ -82,6 +82,7 @@ public:
   LinkedList();
   void addToFront(...);
   void addToRear(...);
+  void addItem(...);
   void deleteItem(...);
   bool findItem(...);
   void printItems(...);
@@ -98,10 +99,128 @@ LinkedList::LinkedList()
 }
 ```
 
-Pseudocode for printItems():
+Traversal of linked list, i.e. printItems():
 ```
 void LinkedList::printItems()
 {
-  ????
+    for(Node *p = head; p != nullptr; p = p->next)
+      cout << p->value << endl;
 }
 ```
+
+Adding nodes:
+```
+void LinkedList::addToFront(string v)
+{
+  Node *p = new Node;
+  p->value = v;
+  p->next = head;
+  head = p->next;
+}
+```
+```
+void LinkedList::addToRear(string v)
+{
+  if(head == nullptr)
+    addToFront(v);
+  else
+  {
+    Node *p = head;
+    while(p->next != nullptr)
+      p = p->next;
+    Node *q = new Node;
+    q->value = v;
+    q->next = nullptr;
+    p->next = q;
+  }
+  //alternately a tail pointer can be used
+}
+```
+```
+//assume list is ordered alphabetically
+void LinkedList::addItem(string v)
+{
+  if(head == nullptr)
+    addToFront(v);
+  else if(v < head->value)
+    addToFront(v);
+  else
+  {
+    Node *p = head;
+    while(p->next != nullptr)
+      if(v >= p->value && v <= p->next->value)
+        break;
+      p = p->next
+  }
+  Node *q = new Node;
+  q-> value = v;
+  q->next = p->next;
+  p->next = q;
+}
+```
+
+Deleting items:
+```
+void LinkedList::deleteItem(string v)
+{
+    if(head == nullptr)
+      return;
+    else if(v == head->value)
+    {
+      Node *deleteThis = head;
+      head = head->next;
+      delete deleteThis;
+      return;
+    }
+    else
+    {
+      Node *p = head;
+      while(p != nullptr)
+      {
+        if(p->next != nullptr &&
+           p->next->value == v)
+          break;
+        p = p->next;
+      }
+      if(p != nullptr)
+      {
+        Node *deleteThis = p->next;
+        p->next = deleteThis->next;
+        delete deleteThis;
+      }
+    }
+}
+```
+
+Finding Items:
+```
+bool LinkedList::findItem(string v)
+{
+  Node *p = head;
+  while(p != nullptr)
+  {
+    if(p->value == v)
+      return true;
+    p = p->next;
+  }
+  return false;
+}
+```
+
+Destructing the linked list:
+```
+LinkedList::~LinkedList()
+{
+  Node *p = head;
+  while(p != nullptr)
+  {
+    Node *temp = p->next;
+    delete p;
+    p = temp;
+  }
+}
+```
+
+Downsides of linked lists:
+-More complex than Arrays
+-Searching is inefficient, accessing the kth item requires traversing k-1 items
