@@ -115,7 +115,7 @@ void LinkedList::addToFront(string v)
   Node *p = new Node;
   p->value = v;
   p->next = head;
-  head = p->next;
+  head = p;
 }
 ```
 ```
