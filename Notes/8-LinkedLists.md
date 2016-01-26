@@ -224,3 +224,39 @@ LinkedList::~LinkedList()
 Downsides of linked lists:
 -More complex than Arrays
 -Searching is inefficient, accessing the kth item requires traversing k-1 items
+
+---
+
+# Doubly Linked Lists
+
+One downside of a linked list is that it can only be traversed in one directions.
+
+A doubly linked list has nodes containing pointers to both the next and
+previous nodes. This allows the list to be traversed in both directions.
+
+Three sets of pointers must be updated when a node is inserted or deleted:
+- The new node's next and previous pointers
+- The previous node's next pointer
+- The next node's previous pointer
+
+Challenge:
+Write a function called ```insert``` that accepts two NODE pointers as arguments:
+- ```b4node```: points to a node in a doubly-linked list
+- ```newnode```: points to a new node you want to insert
+
+(assume that a valid node follows ```b4node``` prior to insertion)
+
+```
+struct Node
+{
+string data;
+NODE *next, *prev;  
+}
+
+void insert(newnode, b4node)
+{
+  newnode->prev = b4node;
+  newnode->next = b4node->next;
+  b4node->next->prev = newnode;
+}
+```
