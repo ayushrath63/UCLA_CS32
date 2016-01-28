@@ -1,5 +1,5 @@
 # Constructors and Destructors
----
+
 ## Constructors
 
   Every class should have an initialization function that can be used to reset

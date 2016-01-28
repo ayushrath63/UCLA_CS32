@@ -1,5 +1,4 @@
 # Pointers
----
 
 ## Intro to pointers
 

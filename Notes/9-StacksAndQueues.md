@@ -184,3 +184,31 @@ Steps:
 - GOTO step 3
 
 Queue Implementations:
+
+Circular Queues:
+
+A circular queue is an array-based queue. Items do not need to be shifted with
+a circular queue.
+
+```
+private data:
+  an array: array-based
+  an integer: head
+  an integer: tail
+  an integer: count
+
+To initialize the queue:
+head = tail = count = 0
+
+to enqueue a new item, place it in arr[tail], increment tail and count
+
+to dequeue an item fetch head[arr], decrement head, count
+
+if head or tail go past the end of the array, set them to 0
+```
+
+STL Queue Implementation:
+```
+#include <iostream>
+#include <queue>
+```

@@ -1,5 +1,5 @@
 # Class Composition
----
+
 ## Classes Containing objects
 
   Class composition is when a class contains one or more member variables

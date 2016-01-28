@@ -1,7 +1,5 @@
 # Copy Constructors
 
----
-
 Suppose we have a class Circle:
 ```
 class Circ
