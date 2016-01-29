@@ -212,3 +212,55 @@ public:
   }
 };
 ```
+
+Inheritance and Construction:
+
+When a derived object is defined, it has both superclass and subclass parts.
+The base class part is constructed first, the subclass part afterwards.
+
+Inheritance and Destruction:
+
+The derived object part is destructed before the superclass object part.
+
+Inheritance and Initializer Lists:
+
+If a superclass does not have a constructor without parameters, a constructor
+with the appropriate amount of parameters must be added to the initializer list.
+Adding a parameter to the subclass's constructor allows it to be used in the
+constructor of the superclass object in the initializer list.
+
+Inheritance and Assignment Operators:
+
+A shallow copy will be created if an assignment operator for the derived class
+is not defined.
+
+Example of assignment operator for derived class with dynamic memory:
+```
+class Person
+{
+public:
+  Person() { myBook = new Book; } // I allocate memory!!!
+  Person(const Person &other);
+  Person& operator=(const Person &other);
+…
+private:
+  Book *myBook;
+};
+class Student: public Person
+{
+public:
+  Student(const Student &other) : Person(other)
+  {
+    … // make a copy of other’s linked list of classes…
+  }
+  Student& operator=(const Student &other)
+  {
+      if (this == &other) return *this;
+      Person::operator=(other);
+      … // free my classes and then allocate room for other’s list of classes
+      return(*this);
+  }
+private:
+  LinkedList *myClasses;
+};
+```

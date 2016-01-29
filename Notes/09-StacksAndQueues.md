@@ -104,11 +104,11 @@ Output: answer
 Private Data: a stack
 Steps:
 - Start at leftmost token
-- If token is a number, push it onto the stacks
+- If token is a number, push it onto the stack
 - Else if the token is an operator:
   - Pop top value into variable v2, second-to-top item into variable v1
   - Apply operator to v1 and v2 (e.g. v1/v2)
-  - Push result to the stacks
+  - Push result to the stack
 - If there are more tokens, advance to next token and go back to step 2
 - After all tokens have been processed, top item of stack is the answer
 
@@ -121,7 +121,7 @@ Output: true if solvable, false if not
 Private Data: a queue
 
 Steps:
-- Push starting point onto stacks
+- Push starting point onto stack
 - Mark starting point as discovered
 - if stack is empty, there is no solution
 - Pop the top of stack
