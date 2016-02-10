@@ -147,14 +147,6 @@ Steps:
 A queue is a First-In-First-Out (FIFO) data structure. Items are enqueued at the
 rear and dequeued at the front.
 
-Queue interface:
-```
-enqueue(int a);
-int dequeue();
-...
-FINISH THIS LATER
-...
-```
 
 Common Uses for Queues:
   - Storing data from the internet
@@ -205,10 +197,4 @@ to enqueue a new item, place it in arr[tail], increment tail and count
 to dequeue an item fetch head[arr], decrement head, count
 
 if head or tail go past the end of the array, set them to 0
-```
-
-STL Queue Implementation:
-```
-#include <iostream>
-#include <queue>
 ```
