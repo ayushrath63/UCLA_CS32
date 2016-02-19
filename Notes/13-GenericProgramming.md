@@ -170,6 +170,9 @@ inline void ClassName<Item>::FunctionName(Item a)
 
 Template classes are useful when building container classes, such as linked lists.
 
+1. A derived class that must initialize member variables of the base class must use the initializer list
+2. A derived function should not access private variables from the base class.
+
 ### Part 4: The Standard Template Library (STL)
 
 The STL is a collection of pre-written classes that are built using templates.
@@ -286,7 +289,7 @@ void tickleNerds( const list<Nerd> &nerds)
   for (it=nerds.begin(); it != nerds.end(); it++)
     cout << *it << “ says teehee!\n”;
 }
-main()
+int main()
 {
   list<string> nerds;
   nerds.push_back(“Carey”);
@@ -324,3 +327,139 @@ containers would be needed. Only one of each key can be stored in a ```map```.
 A ```map``` can be searched by key using the ```find()``` function. To map more
 complicated classes or structs, the ```operator<``` method must be defined for the
 class or struct.
+
+##### Set
+
+A ```set``` is a container that contains unique items. If you attempt to insert
+a duplicate item it is ignored. A set is ordered automatically, but an operator<
+must be defined.
+
+Example:
+```
+#include <set>
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+  set<int> a;
+  a.insert(1);
+  a.insert(5);
+  a.insert(66);
+
+  set<int>::iterator it;
+  it = a.find(5);
+  if(it == a.end())
+  {
+    cout << "5 not found" << endl;
+    return 0;
+  }
+  cout << *it << "found" << endl;
+}
+```
+
+Most STL containers have an ```erase()``` method that can be used to delete an
+item using an iterator. The iterator will be invalid after ```erase()``` is called.
+
+Important Note: After an item is added or removed from a ```vector```, all iterators
+pointing to items are invalid. This is not true for a ```list```, ```set``` or ```map```,
+unless the item pointed to by the iterator is deleted.
+
+### Part 5: STL algorithms
+
+The STL ```<algorithm>``` library provides template functions that cam be used
+with many different data types.
+
+The STL ```find()``` function can be used to find items in most STL containers
+and arrays. ```find()``` takes 3 parameters, an iterator to the beginning, an
+iterator to after the end, and the value to search for. When used with an array,
+pointers are used instead of iterators. ```find()``` returns the first match using
+a linear search.
+
+The ```find_if()``` function is similar to ```find()``` but takes a pointer to a
+predicate function that takes a single parameter as the third argument and returns
+a pointer to the first item that causes the predicate to return true, or the
+pointer to the location after the last element.
+
+The ```sort()``` function can be used to sort an array or ```vector```. It takes
+pointers or iterators to the beginning and after the end of the sorting area as
+arguments. The ```operator<``` or another custom comparison function must be
+defined in order to use ```sort()```.
+
+### Part 6: Compound STL Data Structures
+
+Suppose you want to maintain a list of courses for each UCLA student.
+One method is to map student names to a ```list``` of courses.
+
+Example:
+```
+#inlcude <map>
+#inlcude <list>
+
+class Course
+{
+  ...
+};
+
+int main()
+{
+  map<string,list<Course> > crsmap;
+
+  Course c1("cs", "32"),
+         c2("math", "33A"),
+         c3("english", "1");
+
+  crsmap["carey"].pushback(c1);
+  crsmap["carey"].pushback(c3);
+  crsmap["david"].pushback(c1);
+  crsmap["david"].pushback(c2);
+}
+```
+
+**Challenge - Design a compound STL data structure to map a Person object to a
+set of their friends**
+```
+#include <set>
+using namespace std;
+
+class Person
+{
+public:
+  string getName()
+  string getPhone()
+...
+};
+
+bool Person::operator<(const Person &a, const Person &b)
+{
+  return a.getName() < b.getName();
+}
+
+int main()
+{
+  map<Person,set<Person> > friendster;
+}
+```
+
+**Challenge - Design a compound STL data structure to associate a person (string)
+with the courses they've taken and further associate each course with the grade
+recieved**
+
+```
+#include <map>
+
+class Person
+{...};
+
+bool Person::operator<(const Person &a, const Person &b)
+{...}
+
+class Course
+{...};
+
+bool Course::operator<(const Course &a, const Course &b)
+{...}
+
+map<Person,map<Course, string> > x;
+```
