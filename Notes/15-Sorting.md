@@ -22,13 +22,13 @@ Example:
 ```
 void selectionSort(int A[], int n)
 {
-    for (int i = 0; i < n; i++)
-    {
-        int minIndex = i;
-        for (int j = i + 1; j < n; j++)
-            if (A[j] < A[minIndex]) minIndex = j;
-        swap(A[i], A[minIndex]);
-    }
+  for (int i = 0; i < n; i++)
+  {
+    int minIndex = i;
+    for (int j = i + 1; j < n; j++)
+      if (A[j] < A[minIndex]) minIndex = j;
+    swap(A[i], A[minIndex]);
+  }
 }
 ```
 
@@ -49,17 +49,17 @@ Example:
 ```
 void insertionSort(int A[], int n)
 {
-    for (int s = 2; s <= n; s++)
+  for (int s = 2; s <= n; s++)
+  {
+    int sortMe = A[s - 1];
+    int i = s - 2;
+    while (i >= 0 && sortMe < A[i])
     {
-        int sortMe = A[s - 1];
-        int i = s - 2;
-        while (i >= 0 && sortMe < A[i])
-        {
-            A[i + 1] = A[i];
-            --i;
-        }
-        A[i + 1] = sortMe;
+      A[i + 1] = A[i];
+      --i;
     }
+    A[i + 1] = sortMe;
+  }
 }
 ```
 
@@ -82,20 +82,20 @@ Example:
 ```
 void bubbleSort(int Arr[], int n)
 {
-    bool atLeastOneSwap;
-    do
+  bool atLeastOneSwap;
+  do
+  {
+    atLeastOneSwap = false;
+    for (int j = 0; j < (n - 1); j++)
     {
-        atLeastOneSwap = false;
-        for (int j = 0; j < (n - 1); j++)
-        {
-            if (Arr[j] > Arr[j + 1])
-            {
-                Swap(Arr[j], Arr[j + 1]);
-                atLeastOneSwap = true;
-            }
-        }
+      if (Arr[j] > Arr[j + 1])
+      {
+        Swap(Arr[j], Arr[j + 1]);
+        atLeastOneSwap = true;
+      }
     }
-    while (atLeastOneSwap == true);
+  }
+  while (atLeastOneSwap == true);
 }
 ```
 
@@ -125,3 +125,110 @@ Shell sort is based on an underlying sort called _h-sort_
 Shell sort is very low memory. Empirically, shell sort has been found to be
 O(n<sup>1.25</sup>), an analytic solution for the Big-O is not known.
 It is unstable.
+
+### Quicksort
+
+Quicksort is a divide and conquer search.
+
+1. If the array contains 0 or 1 element, return
+2. Select and arbitrary element P (pivot)
+3. Move all elements <= P to the left, all elements > P to the right
+4. Recursively repeat on left sub-array and right sub-array
+
+Example:
+```
+int Partition(int a[], int low, int high)
+{
+  int pi = low;
+  int pivot = a[low];
+  do
+  {
+      while (low <= high && a[low] <= pivot)
+        low++;
+      while (a[high] > pivot)
+        high--;
+      if (low < high)
+        swap(a[low], a[high]);
+  }
+  while (low < high);
+    swap(a[pi], a[high]);
+  pi = high;
+  return (pi);
+}
+
+void QuickSort(int Array[], int First, int Last)
+{
+  if (Last– First >= 1) {
+    int PivotIndex;
+    PivotIndex = Partition(Array, First, Last);
+    QuickSort(Array, First, PivotIndex - 1); // left
+    QuickSort(Array,PivotIndex+1,Last); // right
+  }
+}
+```
+
+The ```Partiton()``` function is O(n).
+
+Quicksort is unstable. Quicksort is O(nlog<sub>2</sub>n) in the best case, in
+the worst case (mostly sorted, mostly reverse sorted, many identical elements),
+it is O(n<sup>2</sup>). Quicksort uses a variable amount of memory, it varies
+significantly. Quicksort is easily parallelizable with multiple cores.
+
+### Mergesort
+
+Mergesort is a divide and conquer search.
+
+Mergesort is based on a simpler ```merge()``` function.
+This function takes two pre-sorted arrays and outputs a third sorted array.
+
+1. If array has 0 or 1 element, return
+2. Split array into two equal sections
+3. Recursively call Mergesort on the left half
+4. Recursively call Mergesort on the right half
+5. Marge halves
+
+Example:
+```
+void merge(int data[], int n1, int n2)
+{
+  int i = 0, j = 0, k = 0;
+  int * temp = new int[n1 + n2];
+  int * sechalf = data + n1;
+  while (i < n1 || j < n2)
+  {
+    if (i == n1) temp[k++] = sechalf[j++];
+    else if (j == n2) temp[k++] = data[i++];
+    else if (data[i] < sechalf[j]) temp[k++] = data[i++];
+    else temp[k++] = sechalf[j++];
+  }
+  for (i = 0; i < n1 + n2; i++)
+    data[i] = temp[i];
+  delete[] temp;
+}
+
+void Mergesort(int data[], int n)
+{
+  if(n <= 1)
+    return;
+  int left[n/2];
+  for(int i = 0; i < n/2; i++)
+    left[i] = data[i];
+  int right[n-n/2];
+  for(int i = n/2; i < n; i++)
+    right[i] = data[i];
+  Mergesort(left[], n/2);
+  Mergesort(right[], n-n/2);
+  for(int i = 0; i < n; i++)
+  {
+    if(i < n/2)
+      data[i] = left[i];
+    if(i >= n/2)
+      data[i] = right[i-n/2];
+  }
+  merge(data[], n/2, n-n/2)
+}
+```
+
+Mergesort is always O(nlog<sub>2</sub>n), but uses a lot of memory. Mergesort
+cannot be used easily on a linked list, and is stable or unstable depending on
+the implementation of ```merge()```. Mergesort is easily parallelizable.

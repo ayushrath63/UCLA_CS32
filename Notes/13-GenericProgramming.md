@@ -262,7 +262,7 @@ int main()
   lf.push_back(4.2);
   lf.push_front(3.3);
 
-  list<float>::iterator it; //iterator that can point to vectors of ints
+  list<float>::iterator it; //iterator that can point to list of ints
   it = lf.begin();
   cout << *it; //prints 3.3
 
