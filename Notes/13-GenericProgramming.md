@@ -88,7 +88,7 @@ alternately, ```template <class Item>``` can be used instead of ```template <tem
 
 _Always_ put templated functions in a header file.
 
-A template data type must be used to define the type of ate least one parameter,
+A template data type must be used to define the type of at least one parameter,
 otherwise an error will occur.
 
 Suppose you have the following  function:
