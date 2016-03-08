@@ -107,8 +107,8 @@ void InOrder(Node *cur)
 ### Post-order traversal
 
 1. Process nodes in left sub-tree
-2. Process the current node
-3. Process the nodes in the right sub-tree
+2. Process the nodes in the right sub-tree
+3. Process the current node
 
 Example:
 ```
