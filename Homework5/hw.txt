@@ -1,0 +1,103 @@
+Homework 5
+----------
+1:
+a)
+
+50
+  20
+    10
+      XX
+      15
+    40
+      30
+        25
+        35
+  60
+    XX
+    70
+      65
+      80
+        75
+
+b)
+
+50
+  25
+    10
+      XX
+      15
+    30
+  60
+    XX
+    70
+      65
+      80
+        75
+
+c)
+In-order: 10,15,20,25,30,25,40,50,60,65,70,75,80
+Pre-order: 50,20,10,15,40,30,25,35,60,70,65,80,75
+Post-order: 15,10,25,35,30,40,20,65,75,80,70,60,50
+
+2:
+
+a)
+
+7
+  3
+    1
+    2
+  5
+    4
+    XX
+
+b)
+735124
+
+c)
+53412
+
+3:
+a)
+struct Node
+{
+  Node* parent;
+  Node* leftChild;
+  Node* rightChild;
+  int data;
+};
+
+b)
+
+If the root pointer is null:
+  allocate new node, set root pointer to point to it
+  set parent pointer of node to null
+  return
+
+else:
+  start at tree root
+  while true:
+    if new node is equal to current node return
+    else if new node is less than current node's value
+      if there is a left child node, go to it
+      else
+        set temporary pointer to point to current node
+        allocate new node and set current node's left pointer to point to the new node
+        set parent pointer of new node to the temporary pointer
+        return
+    else if new node is greater than current node's value
+      if there is a right child node, go to it
+      else
+        set temporary pointer to point to current node
+        allocate new node and set current node's right pointer to point to the new node
+        set parent pointer of new node to the temporary pointer
+        return
+4
+a) O(C+S)
+b) O(S+log(C))
+c) O(log(SC))
+d) O(log(S))
+e) O(1)
+f) O(log(C) + S)
+g) O(S*log(S))
+h) O(C*log(S))

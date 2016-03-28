@@ -1,0 +1,14 @@
+Homework 4
+----------
+2:
+There is no operator!= defined for Coord, so insert fails.
+
+3:
+b) Information about the path could not be passed down or returned without a parameter, since the return type is void
+
+4:
+a) O(N^3), there are 3 nested for loops, each runs N times
+b) O(N^3), Although the 2nd loop has been changed, in the worst case it will still run up to N times like the other two
+
+5:
+O(N^2), There is one for loop that runs N times, get() is called during this loop, and it can run up to N times

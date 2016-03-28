@@ -1,0 +1,453 @@
+Project 2 Report
+----------------
+
+The doubly linked list implementation contains nodes in reverse order of insertion.
+Each node contains a pointer to the next node and the previous node. The first
+node's previous pointer and the last node's next pointer are both null. There is
+and integer variable that stores the number of nodes in the linked list.
+
+
+A typical linked list of this implementation looks like this:
++-----------+
+|  _head    |
++----+------+
+     |
+     |
++----v-------+         +------------+          +-------------+         +------------+
+|            |         |            |          |             |         |            |
+|  key1      |         |  key2      |          |  key3       |         |  key4      |
+|            |         |            |          |             |         |            |
++------------+         +------------+          +-------------+         +------------+
+|            |         |            |          |             |         |            |
+|  next      +-------->+  next      +---------->  next       +--------->  next      |
+|            |         |            |          |             |         |  (nullptr) |
++------------+         +------------+          +-------------+         +------------+
+|            |         |            |          |             |         |            |
+|  previous  <---------+  previous  <----------+  previous   <---------+  previous  |
+|  (nullptr) |         |            |          |             |         |            |
++------------+         +------------+          +-------------+         +------------+
+|            |         |            |          |             |         |            |
+|  value1    |         |  value2    |          |  value3     |         |  value4    |
+|            |         |            |          |             |         |            |
++------------+         +------------+          +-------------+         +-----^------+
+                                                                             |
+                                                                             |
+                                                                       +-----+------+
+                                                                       |  _tail     |
+                                                                       +------------+
++--------------+
+|  _nPairs = 4 |
++--------------+
+
+And an empty linked list of this implementation looks like this:
++------------+
+|  _head     |
+|  (nullptr) |
++------------+
++------------+
+|  _tail     |
+|  (nullptr) |
++------------+
++--------------+
+|  _nPairs = 0 |
++--------------+
+
+Psuedocode for non-trivial algorithms:
+
+  Map::Map(const Map &other)
+  {
+    Set number of nodes to 0
+    while the size of the map being constructed is less than the size of other:
+      get the last node of other not in the Map being constructed and insert it
+  }
+
+  Map::~Map(const Map &other)
+  {
+    while the list is not empty:
+      delete the last node
+  }
+
+  Map& Map::operator=(const Map &other)
+  {
+    while the list is not empty:
+      delete the last node
+
+    while the size of the map being constructed is less than the size of other:
+      get the last node of other not in the Map being constructed and insert it
+  }
+
+  bool  Map::contains(const KeyType& key)
+  {
+    start at first node
+    while not pointing to null:
+      if the key of the current node is equal to the parameters:
+        return true
+      else:
+        advance to the next node
+
+    return false
+  }
+
+  bool Map::insert(const KeyType& key, const ValueType& value)
+  {
+    if the key parameter is in the linked list:
+      return false
+
+    else:
+      Add a new node to the front of the linked list
+      set _head to point to the first node
+      if there is a node after the first:
+        set the previous pointer for the second node
+
+      if the list has only one node:
+        set _tail to point to the first node
+
+      increment the number of nodes
+      return true
+  }
+
+  bool Map::update(const KeyType& key, const ValueType& value)
+  {
+    if the key parameter is not in the linked list:
+      return false
+
+    else:
+      start at first node
+      while key of current node is not equal to key parameter:
+        advance to next node
+      set value of current node equal to value parameter
+      return true
+  }
+
+  bool Map::inserOrUpdate(const KeyType& key, const ValueType& value)
+  {
+    if update(key,value) or insert(key,value):
+      return true
+
+    else:
+      return false
+  }
+
+  bool Map::erase(const KeyType& key)
+  {
+    if the key parameter is not in the linked list:
+      return false
+
+    else:
+      create a dummy node, link to first and last nodes to make list circular
+      delete the node containing the key parameter and set pointers in surrounding nodes
+      decrement number of nodes
+      delete dummy node
+      set first node's previous pointer to null
+      set last node's next pointer to null
+      return true
+  }
+
+  bool Map::get(const KeyType& key, ValueType& value)
+  {
+    if the key parameter is not in the linked list:
+      return false
+    else:
+      go to node containing key parameter
+      set value parameter to the value stored in the current node
+      return true
+  }
+
+  bool Map::get(int i, KeyType& key, ValueType& value)
+  {
+    if i < 0 or i >= n:
+      return false
+    else:
+      go to the i+1th node in the list
+      set key and value parameters to stored key and value
+      return true
+  }
+
+  void Map::swap(Map& other)
+  {
+    create temporary variables to store head tail pointers and pair count of current map
+    set head tail pointers and pair count of current map to head tail pointers and pair count of other
+    set head tail pointers and pair count of other to values stored in temporary variables
+  }
+
+  bool combine(const Map& m1, const Map& m2, Map& result)
+  {
+    set result equal to m1
+    define boolean variable returnBool
+
+    for every node in m2
+      if key of the current node is in m1 and the corresponding values do not match:
+        delete the node from result
+      if key of the current node is in m1 and the corresponding values match:
+        do nothing
+      else:
+        insert a copy of the current node into m1
+
+    return returnBool
+  }
+
+  void subtract(const Map& m1, const Map& m2, Map& result)
+  {
+    if the addresses of m1 and m2 are the same:
+      set result to an empty map
+      return
+
+    set result equal to m1
+    for every node in m1
+      if m2 contains a node with the same key
+      delete the node containing the key from result
+    return
+  }
+
+Test cases for each function:
+  Note: All test cases were performed on a map from strings to doubles
+
+  Default Constructor:
+    1:
+      Map a;
+      assert(a.size == 0); //default constructor creates a map of size 0
+      assert(a.emtpy);     //the map generated by the default constructor is 0
+      assert(!a.erase("key1")); //erase returns false because there is nothing to erase
+
+  Copy constructor:
+    1:
+      Map a;
+      a.insert("key1",1);
+      a.insert("key2",2);
+      Map b(a);
+      assert(!b.empty()); //b is not empty
+      assert(a.size() == b.size()); //a and b are the same size
+      assert(a.contains(key1) == b.contains(key1)); //a and b both contain a node with a key, "key1"
+      assert(a.contains(key2) == b.contains(key2)); //a and b both contain a node with a key, "key2"
+      ValueType av, bv;
+      a.get("key1",av);
+      b.get("key1",bv)
+      assert(av == bv); //"key1" maps to the same values in a and b
+      a.get("key2",av);
+      b.get("key2",bv)
+      assert(av == bv); //"key2" maps to the same values in a and b
+
+    2:
+      Map a;
+      Map b(a);
+      assert(b.size == 0); //b has a size of 0
+      assert(a.emtpy);     //the map generated by the default constructor is 0
+      assert(!a.erase("key1")); //erase returns false because there is nothing to erase
+
+  Assignment Operator:
+    1:
+      Map a;
+      a.insert("key1",1);
+      a.insert("key2",2);
+      Map b;
+      a.insert("key3",3);
+      a.insert("key4",4);
+      b.insert("key5",5);
+      b = a;
+      assert(a.size() == b.size()); //a and b are the same size
+      ValueType av, bv;
+      a.get("key1",av);
+      b.get("key1",bv)
+      assert(av == bv); //"key1" maps to the same values in a and b
+      a.get("key2",av);
+      b.get("key2",bv)
+      assert(av == bv); //"key2" maps to the same values in a and b
+    2:
+      Map a;
+      a.insert("key1",1);
+      a.insert("key2",2);
+      a = a; //test for aliasing
+      a.contains("key1"); //"key1" still in a
+      a.contains("key2"); //"key2" still in a
+
+  Map::empty():
+    1:
+      Map a;
+      assert(a.empty()); //map with nothing in it is empty
+      a.insert("key1",1);
+      assert(!a.empty());  //map that has something inserted into it is not empty
+
+  Map::size():
+    1:
+      Map a;
+      assert(a.size() == 0); //empty map has size 0
+      a.insert("key1",1);
+      a.insert("key2",2);
+      assert(a.size() == 2); //map has size 2 if 2 items have been inserted
+
+  Map::insert():
+    1:
+      Map a;
+      a.insert("key1",1);
+      KeyType ak;
+      ValueType av;
+      a.get(0,ak,av);
+      assert(ak == "key1"); //first key properly inserted
+      assert(av == 1); //fisrt value properly inserted
+      assert(!a.insert("key1",1)); //insertion fails if key is already in map
+      a.insert("key2", 2);
+      KeyType ak2;
+      ValueType av2;
+      a.get(1,ak2,av2);
+      assert(ak2 == "key2"); //key properly inserted
+      assert(av2 == 2); //value properly inserted
+      assert(a.insert("key3",7)); //proper insertion returns true;
+
+  Map::update():
+    1:
+      Map a;
+      a.insert("key1",1);
+      assert(!a.update("key2",1)); //cannot update if key is not in map
+      assert(a.update("key1", 3)); //proper update returns true
+      a.update("key1", 2);
+      ValueType av;
+      a.get("key1", av);
+      assert(av == 2); //value updated correctly
+
+  Map::insertOrUpdate():
+    1:
+      Map a;
+      a.insertOrUpdate("key4", 4);
+      assert(a.insertOrUpdate("key4", 3)); //update using insertOrUpdate returns true
+      assert(a.insertOrUpdate("key2", 6)); //insertion using insertOrUpdate returns true
+
+  Map::erase();
+    1:
+      Map a;
+      a.insert("key1",1);
+      a.insert("key2",2);
+      asser(!a.erase("key5")); //erase returns false if key not in map
+      a.erase("key2");
+      assert(a.size()==1); //erasing a key decrements size
+    2:
+      Map a;
+      a.insert("key1",1);
+      a.erase("key1");
+      assert(a.empty()); //erasing last remaining node empties map
+      assert(a.size() == 0); //erasing last remaining node empties map
+
+  Map::contains():
+    1:
+      Map a;
+      assert(!a.contains("key")); //contains returns false if key not in map
+      a.insert("key", 1);
+      assert(a.contains("key")); //contains returns true if key is in map
+
+  Map::get():
+    1:
+      Map a;
+      a.insert("key1", 67);
+      ValueType av == 0;
+      assert(!a.get("key",av) && av == 0); //get (2 parameters) returns false if key is not in map, value parameter is unchanged
+      assert(a.get("key1",av) && av == 67); //get (2 parameters) returns true if key is not in map, value parameter is changed
+
+    2:
+      Map a;
+      a.insert("key1", 67);
+      a.insert("key2", 79);
+      KeyType key = "key";
+      ValueType val = 1;
+      assert(!a.get(3,key,val) && key == "key" && val == 1); //returns false if integer parameter is not between 0 and size-1 inclusive
+                                                             //other parameters are unchanged
+      assert(a.get(0,key,val) && key == "key2" && val == 79) //returns true if in parameter is in the right range
+                                                             //changes other parameters properly
+
+  Map::swap()
+    1:
+      Map a;
+      a.insert("key6" , 12);
+      a.insert("key7" , 9);
+      Map b;
+      a.insert("key3",3);
+      a.insert("key4",4);
+      b.insert("key5",5);
+      a.swap(b);
+      assert(a.size() == 3 && b.size() == 2); //sizes of a and b swapped correctly
+      assert(a.contains("key3") && a.contains("key4") && a.contains("key4")); //keys formerly in b now in a
+      assert(b.contains("key6") && b.contains("key7")); //keys formerly in a now in b
+      ValueType v1,v2,v3;
+      assert(b.get("key6",v1) && b.get("key7",v2) && v1 == 12 && v2 == 9); //values swapped from a to b correctly
+      assert(a.get("key3",v1) && a.get("key4",v2) && a.get("key5",v3) && v1 == 3 && v2 == 4 && v3 == 5);
+          //values swapped from b to a correctly
+    2:
+      Map a;
+      a.insert("key6" , 12);
+      a.insert("key7" , 9);
+      a.swap(a);
+      assert(a.size() == 2); size stays the same if aliasing occurs
+      ValueType v1,v2;
+      assert(a.get("key6",v1) && a.get("key7",v2) && v1 == 12 && v2 == 9); //keys and values stay the same if aliasing occurs
+
+  combine():
+    1:
+      Map a;
+      a.insert("key3" , 12);
+      a.insert("key4" , 9);
+      Map b;
+      a.insert("key3",3);
+      a.insert("key4",4);
+      b.insert("key5",5);
+      Map c;
+      assert(!combine(a,b,c)); //combine returns false if matching keys but mismatched values
+      ValueType v1;
+      assert(c.size() == 1); //only one node inserted into 0
+      assert(c.get("key5",v1) && v1 == 5); //node without mismatched values inserted properly
+    2:
+      Map a;
+      a.insert("key3" , 3);
+      a.insert("key1" , 9.1);
+      Map b;
+      a.insert("key3",3);
+      a.insert("key4",4);
+      b.insert("key5",5);
+      Map c;
+      assert(!combine(a,b,c)); //combine returns true if matching keys and values
+      ValueType v1,v2,v3,v4;
+      assert(c.size() == 4); //4 nodes inserted into 0
+      c.get("key1",v1);
+      c.get("key3",v2);
+      c.get("key4",v3);
+      c.get("key5",v4);
+      assert(c.contains("key1") && c.contains("key3") && c.contains("key4") && c.contains("key5")); //keys inserted properly
+      assert(v1 == 9.1 && v2 == 3 && v3 == 4 && v4 == 5); //values inserted properly
+    3:
+      Map a;
+      a.insert("key1" , 9.1);
+      Map b;
+      a.insert("key3",3);
+      a.insert("key4",4);
+      b.insert("key5",5);
+      Map c;
+      assert(!combine(a,b,c)); //combine returns true if all key unique
+      ValueType v1,v2,v3,v4;
+      assert(c.size() == 4); //4 nodes inserted into 0
+      c.get("key1",v1);
+      c.get("key3",v2);
+      c.get("key4",v3);
+      c.get("key5",v4);
+      assert(c.contains("key1") && c.contains("key3") && c.contains("key4") && c.contains("key5")); //keys inserted properly
+      assert(v1 == 9.1 && v2 == 3 && v3 == 4 && v4 == 5); //values inserted properly
+
+  subtract():
+    1:
+      Map a;
+      a.insert("key3" , 3);
+      a.insert("key1" , 9.1);
+      Map c;
+      subtract(a,a,c);
+      assert(c.size() == 0); //subtracting two of same map produces empty map
+      assert(c.empty()); //subtracting two of same map produces empty map
+    2:
+      Map a;
+      a.insert("key3" , 3);
+      a.insert("key1" , 9.1);
+      Map b;
+      a.insert("key3",3);
+      a.insert("key4",4);
+      b.insert("key5",5);
+      Map c;
+      subtract(a,b,c);
+      assert(c.size() == 1); //one node with matching key subtracted
+      ValueType v1;
+      c.get("key1",v1);
+      assert(c.contains("key1") && v1 == 9.1); //nodes without matching keys in c
